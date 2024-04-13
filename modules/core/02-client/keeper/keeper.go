@@ -29,6 +29,8 @@ type Keeper struct {
 	legacySubspace types.ParamSubspace
 	stakingKeeper  types.StakingKeeper
 	upgradeKeeper  types.UpgradeKeeper
+
+	postUpdateHandler PostUpdateHandler
 }
 
 // NewKeeper creates a new NewKeeper instance
