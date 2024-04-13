@@ -80,6 +80,10 @@ func (k *Keeper) UpdateClient(ctx sdk.Context, clientID string, clientMsg export
 	defer telemetry.ReportUpdateClient(foundMisbehaviour, clientType, clientID)
 	emitUpdateClientEvent(ctx, clientID, clientType, consensusHeights, k.cdc, clientMsg)
 
+	if err := k.handlePostUpdate(ctx, clientID, clientState, clientMsg); err != nil {
+		k.Logger(ctx).Error("post update handler", "error", err)
+	}
+
 	return nil
 }
 
