@@ -109,6 +109,10 @@ func (k Keeper) UpdateClient(ctx sdk.Context, clientID string, clientMsg exporte
 	// emitting events in the keeper emits for both begin block and handler client updates
 	emitUpdateClientEvent(ctx, clientID, clientState.ClientType(), consensusHeights, k.cdc, clientMsg)
 
+	if err := k.handlePostUpdate(ctx, clientID, clientState, clientMsg); err != nil {
+		k.Logger(ctx).Error("post update handler", "error", err)
+	}
+
 	return nil
 }
 
@@ -146,7 +150,6 @@ func (k Keeper) UpgradeClient(ctx sdk.Context, clientID string, upgradedClient e
 	)
 
 	emitUpgradeClientEvent(ctx, clientID, upgradedClient)
-
 	return nil
 }
 

@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"strings"
@@ -18,6 +19,8 @@ import (
 	host "github.com/cosmos/ibc-go/v8/modules/core/24-host"
 	"github.com/cosmos/ibc-go/v8/modules/core/exported"
 	localhost "github.com/cosmos/ibc-go/v8/modules/light-clients/09-localhost"
+
+	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
 )
 
 // Keeper represents a type that grants read and write permissions to any client
@@ -29,6 +32,8 @@ type Keeper struct {
 	legacySubspace types.ParamSubspace
 	stakingKeeper  types.StakingKeeper
 	upgradeKeeper  types.UpgradeKeeper
+
+	postUpdateHandler func(context.Context, string, int64, *cmtproto.ValidatorSet) error
 }
 
 // NewKeeper creates a new NewKeeper instance
