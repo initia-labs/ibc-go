@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"reflect"
@@ -17,6 +18,7 @@ import (
 
 	"github.com/cometbft/cometbft/light"
 
+	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	"github.com/cosmos/ibc-go/v8/modules/core/02-client/types"
 	commitmenttypes "github.com/cosmos/ibc-go/v8/modules/core/23-commitment/types"
 	host "github.com/cosmos/ibc-go/v8/modules/core/24-host"
@@ -34,6 +36,8 @@ type Keeper struct {
 	legacySubspace types.ParamSubspace
 	stakingKeeper  types.StakingKeeper
 	upgradeKeeper  types.UpgradeKeeper
+
+	postUpdateHandler func(context.Context, string, int64, *cmtproto.ValidatorSet) error
 }
 
 // NewKeeper creates a new NewKeeper instance
