@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"context"
-	"errors"
 
 	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -15,8 +14,9 @@ func (k *Keeper) SetPostUpdateHandler(postUpdateHandler func(context.Context, st
 }
 
 func (k Keeper) handlePostUpdate(ctx sdk.Context, clientID string, clientState exported.ClientState, clientMsg exported.ClientMessage) error {
+	// ignore if the handler is not set or the client is not a tendermint client
 	if k.postUpdateHandler == nil || clientState.ClientType() != exported.Tendermint {
-		return errors.New("not set post handler")
+		return nil
 	}
 
 	header := clientMsg.(*ibctm.Header)
