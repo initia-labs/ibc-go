@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package ibc.lightclients.tendermint_attestor.v1;
+
+option go_package = "github.com/cosmos/ibc-go/v8/modules/light-clients/07-tendermint-attestor;tendermintattestor";
+
+import "gogoproto/gogo.proto";
+import "cosmos/ics23/v1/proofs.proto";
+import "ibc/core/commitment/v1/commitment.proto";
+
+message MerkleProofBytesWithAttestations {
+  bytes proof_bytes = 1;
+  repeated Attestation attestations = 2;
+}
+
+message Attestation {
+  bytes pub_key = 1;
+  bytes signature = 2;
+}
