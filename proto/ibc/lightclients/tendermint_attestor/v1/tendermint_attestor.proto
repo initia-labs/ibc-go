@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package ibc.lightclients.tendermint_attestor.v1;
+
+option go_package = "github.com/cosmos/ibc-go/v8/modules/light-clients/07-tendermint-attestor;tendermintattestor";
+
+import "gogoproto/gogo.proto";
+import "ibc/lightclients/tendermint/v1/tendermint.proto";
+
+message ClientState {
+  ibc.lightclients.tendermint.v1.ClientState client_state = 1 [(gogoproto.embed) = true];
+  repeated PubKey attestor_pubkeys = 2 [(gogoproto.nullable) = false];
+  uint32 threshold = 3;
+}
+
+// ConsensusState defines the consensus state from Tendermint.
+message ConsensusState {
+  ibc.lightclients.tendermint.v1.ConsensusState consensus_state = 1 [(gogoproto.embed) = true];
+}
+
+message PubKey {
+  PubKeyType type = 1;
+  bytes key = 2;
+}
+
+enum PubKeyType {
+  SECP256K1 = 0;
+  ETH_SECP256K1 = 1;
+}
+
+message Misbehaviour {
+  option (gogoproto.goproto_getters) = false;
+
+  Header header_1  = 1 [(gogoproto.customname) = "Header1"];
+  Header header_2  = 2 [(gogoproto.customname) = "Header2"];
+}
+
+message Header {
+  ibc.lightclients.tendermint.v1.Header header = 1 [(gogoproto.embed) = true];
+}

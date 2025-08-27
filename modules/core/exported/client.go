@@ -22,6 +22,8 @@ const (
 	// Tendermint is used to indicate that the client uses the Tendermint Consensus Algorithm.
 	Tendermint string = "07-tendermint"
 
+	TendermintAttestor string = "07-tendermint-attestor"
+
 	// Localhost is the client type for the localhost client.
 	Localhost string = "09-localhost"
 
