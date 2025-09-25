@@ -793,8 +793,7 @@ func (k Keeper) ChanUpgradeTimeout(
 			)
 		}
 		counterpartyHops := []string{upgradeConnection.GetCounterparty().GetConnectionID()}
-
-		upgradeAlreadyComplete := upgrade.Fields.Version == counterpartyChannel.Version && upgrade.Fields.Ordering == counterpartyChannel.Ordering && upgrade.Fields.ConnectionHops[0] == counterpartyHops[0]
+		upgradeAlreadyComplete := upgrade.Fields.Version == counterpartyChannel.Version && upgrade.Fields.Ordering == counterpartyChannel.Ordering && counterpartyChannel.ConnectionHops[0] == counterpartyHops[0]
 		if upgradeAlreadyComplete {
 			// counterparty has already successfully upgraded so we cannot timeout
 			return errorsmod.Wrap(types.ErrUpgradeTimeoutFailed, "counterparty channel is already upgraded")
