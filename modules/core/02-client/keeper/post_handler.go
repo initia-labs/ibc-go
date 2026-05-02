@@ -5,17 +5,18 @@ import (
 
 	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/ibc-go/v8/modules/core/exported"
-	ibctm "github.com/cosmos/ibc-go/v8/modules/light-clients/07-tendermint"
+	"github.com/cosmos/ibc-go/v10/modules/core/02-client/types"
+	"github.com/cosmos/ibc-go/v10/modules/core/exported"
+	ibctm "github.com/cosmos/ibc-go/v10/modules/light-clients/07-tendermint"
 )
 
 func (k *Keeper) SetPostUpdateHandler(postUpdateHandler func(context.Context, string, int64, *cmtproto.ValidatorSet) error) {
 	k.postUpdateHandler = postUpdateHandler
 }
 
-func (k Keeper) handlePostUpdate(ctx sdk.Context, clientID string, clientState exported.ClientState, clientMsg exported.ClientMessage) error {
+func (k Keeper) handlePostUpdate(ctx sdk.Context, clientID string, clientMsg exported.ClientMessage) error {
 	// ignore if the handler is not set or the client is not a tendermint client
-	if k.postUpdateHandler == nil || clientState.ClientType() != exported.Tendermint {
+	if k.postUpdateHandler == nil || types.MustParseClientIdentifier(clientID) != exported.Tendermint {
 		return nil
 	}
 
